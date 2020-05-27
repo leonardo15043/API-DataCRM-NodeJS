@@ -34,7 +34,6 @@ let accessKey = "12345";
                console.log('error: ', err, body);
                reject(err);
             } else {
-              console.log(JSON.parse(body));
                resolve(JSON.parse(body));
             }
         });
@@ -43,4 +42,13 @@ let accessKey = "12345";
     return promise;
 
 }
-login();
+
+async function getDescribe() {
+  await login().then( async function(ses) {
+    let response_dataDescribe = await needle('get', `${urlCRM}operation=describe&sessionName=${ses.result.sessionName}&elementType=Certificates`, { headers: { 'accept': 'application/json' }});
+    console.log(response_dataDescribe.body);
+    return response_dataDescribe.body
+  });
+}
+
+getDescribe();
